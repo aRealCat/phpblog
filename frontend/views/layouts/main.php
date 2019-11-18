@@ -35,27 +35,52 @@ AppAsset::register($this);
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
-    $menuItems = [
-        ['label' => Yii::t('yii','Home'), 'url' => ['/site/index']],
-        ['label' => Yii::t('common','about'), 'url' => ['/site/about']],
-        ['label' => Yii::t('common','contack'), 'url' => ['/site/contact']],
+    $leftMenu = [
+        ['label' => '首页', 'url' => ['/site/index']],
+        ['label' => Yii::t('common','Article'), 'url' => ['/post/index']]
+        // ['label' => Yii::t('common','contack'), 'url' => ['/site/contact']],
     ];
     if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => Yii::t('common', 'Signup'), 'url' => ['/site/signup']];
-        $menuItems[] = ['label' => Yii::t('common','login'), 'url' => ['/site/login']];
+        $rightMenu[] = ['label' => Yii::t('common', 'Signup'), 'url' => ['/site/signup']];
+        $rightMenu[] = ['label' => Yii::t('common','login'), 'url' => ['/site/login']];
     } else {
-        $menuItems[] = '<li>'
-            . Html::beginForm(['/site/logout'], 'post')
-            . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->username . ')',
-                ['class' => 'btn btn-link logout']
-            )
-            . Html::endForm()
-            . '</li>';
-    }
+        $rightMenu[] = [
+            'label' => '<img src="'.Yii::$app->params['avatar']['small'].'" alt="'.Yii::$app->user->identity->username.'">',
+    
+            'linkOptions' => ['class' => 'avatar'],
+            'items'=> [
+                [
+                    'label' => '个人中心',
+                    'url' => ['/site/logout'],
+                    'linkOptions' => ['data-method' => 'post']
+                ],
+                [
+                    'label' => '<i class="fa fa-sign-out"></i>退出',
+                    'url' => ['/site/logout'],
+                    'linkOptions' => ['data-method' => 'post']
+                ]
+            ]
+            // 'linkOptions' => ['data-method' => 'post']
+        ];
+        // '<li>'
+        //     .'<img src="/blog1.0/frontend/web/statics/images/avatar/small.png">'
+        //     . Html::beginForm(['/site/logout'], 'post')
+        //     . Html::submitButton(
+        //         'Logout (' . Yii::$app->user->identity->username . ')',
+        //         ['class' => 'btn btn-link logout']
+        //     )
+        //     . Html::endForm()
+        //     . '</li>';
+    };
+    echo Nav::widget([
+        'options' => ['class' => 'navbar-nav navbar-left'],
+        'encodeLabels' => false, // 转码
+        'items' => $leftMenu,
+    ]);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => $menuItems,
+        'encodeLabels' => false, // 转码
+        'items' => $rightMenu,
     ]);
     NavBar::end();
     ?>

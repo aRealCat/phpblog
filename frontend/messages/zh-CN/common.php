@@ -5,5 +5,6 @@ return [
     'email' => '邮箱',
     'about' => '关于',
     'contack' => '联系',
-    'login' => '登录'
+    'login' => '登录',
+    'Article' => '文章'
 ];
