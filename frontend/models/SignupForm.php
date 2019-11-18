@@ -13,7 +13,8 @@ class SignupForm extends Model
     public $username;
     public $email;
     public $password;
-
+    public $rePassword;
+    public $verifyCode;
 
     /**
      * {@inheritdoc}
@@ -25,6 +26,7 @@ class SignupForm extends Model
             ['username', 'required'],
             ['username', 'unique', 'targetClass' => '\common\models\UserModel', 'message' => '用户名已经存在.'],
             ['username', 'string', 'min' => 2, 'max' => 255],
+            // ['username', 'match', 'pattern' => '/正则/']
 
             ['email', 'trim'],
             ['email', 'required'],
@@ -32,14 +34,20 @@ class SignupForm extends Model
             ['email', 'string', 'max' => 255],
             ['email', 'unique', 'targetClass' => '\common\models\UserModel', 'message' => 'This email address has already been taken.'],
 
-            ['password', 'required'],
-            ['password', 'string', 'min' => 6],
+            [['password', 'rePassword'], 'required'],
+            [['password', 'rePassword'], 'string', 'min' => 6],
+            ['rePassword', 'compare', 'compareAttribute' => 'password', 'message' => Yii::t('common', 'Tow times the password is not consitent.')],
+
+            ['verifyCode', 'captcha'],
         ];
     }
     public function attributeLabels() { // 在何处引用了？ 特殊函数?
         return [
             'username' => '用户名',
-            'email' => Yii::t('common', 'email')
+            'password' => '密码',
+            'email' => Yii::t('common', 'email'),
+            'rePassword' => '重复密码',
+            'verifyCode' => '验证码'
         ];
     }
     /**
