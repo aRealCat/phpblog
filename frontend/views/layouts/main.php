@@ -32,7 +32,7 @@ AppAsset::register($this);
         'brandLabel' => Yii::t('common', 'Blog'),
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
+            'class' => 'navbar-inverse ', // navbar-fixed-top
         ],
     ]);
     $leftMenu = [
